@@ -29,7 +29,7 @@ import { formatCurrency, cn } from '~/lib/utils';
 import type { Analytics } from '~/lib/types';
 
 export function meta() {
-  return [{ title: "Analytics | CRM Pro" }];
+  return [{ title: "Analytics | Commodo" }];
 }
 
 const COLORS = ['#3b82f6', '#8b5cf6', '#f59e0b', '#22c55e', '#ef4444', '#6b7280'];
@@ -150,9 +150,8 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Analytics</h1>
-        <p className="text-slate-500 mt-1">Track your performance and insights</p>
+      <div className="mb-4">
+        <h3 className="text-base font-semibold text-[#0d0c22]">Analytics</h3>
       </div>
 
       {/* Stats Grid */}

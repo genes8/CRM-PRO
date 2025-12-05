@@ -23,7 +23,8 @@ settings = get_settings()
 app = FastAPI(
     title="CRM Dashboard API",
     description="A professional CRM application API",
-    version="1.0.0"
+    version="1.0.0",
+    redirect_slashes=False
 )
 
 # CORS configuration

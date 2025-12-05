@@ -1,12 +1,12 @@
 import { Navigate } from 'react-router';
 import { useAuth } from '~/context/AuthContext';
-import { Zap, ArrowRight, Shield, BarChart3, Users } from 'lucide-react';
+import { ArrowRight, Shield, BarChart3, Users } from 'lucide-react';
 import { Button } from '~/components/ui';
 
 export function meta() {
   return [
-    { title: "CRM Pro - Professional Customer Relationship Management" },
-    { name: "description", content: "Manage your contacts, deals, and tasks with our professional CRM solution." },
+    { title: "Commodo - Professional Dashboard Solution" },
+    { name: "description", content: "Manage your business with our professional dashboard solution." },
   ];
 }
 
@@ -15,8 +15,8 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="h-12 w-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5]">
+        <div className="h-12 w-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -26,15 +26,15 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#f5f5f5] via-white to-orange-50/30">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg">
-              <Zap className="h-5 w-5 text-white" />
+            <div className="w-8 h-8 bg-[#0d0c22] rounded-lg flex items-center justify-center">
+              <div className="w-4 h-4 border-2 border-white rounded-sm" />
             </div>
-            <span className="text-xl font-bold text-slate-900">CRM Pro</span>
+            <span className="text-xl font-semibold text-[#0d0c22]">Commodo</span>
           </div>
           <a href="/api/auth/google/login">
             <Button>
@@ -48,18 +48,20 @@ export default function Home() {
       {/* Hero */}
       <main className="pt-32 pb-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full text-blue-700 text-sm font-medium mb-6">
-            <Zap className="h-4 w-4" />
-            Professional CRM Solution
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 rounded-full text-orange-600 text-sm font-medium mb-6">
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg>
+            Professional Dashboard Solution
           </div>
           
-          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-            Manage Your Customer
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> Relationships</span>
+          <h1 className="text-5xl sm:text-6xl font-bold text-[#0d0c22] mb-6 leading-tight">
+            Manage Your Business
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600"> Analytics</span>
           </h1>
           
-          <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto">
-            Streamline your sales process, track deals, manage contacts, and boost productivity with our elegant CRM dashboard.
+          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+            Streamline your sales process, track deals, manage contacts, and boost productivity with our elegant dashboard.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -79,32 +81,32 @@ export default function Home() {
 
         {/* Features */}
         <div className="max-w-6xl mx-auto mt-24 grid md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-            <div className="p-3 bg-blue-100 rounded-xl w-fit mb-4">
-              <Users className="h-6 w-6 text-blue-600" />
+          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:border-gray-200 transition-all">
+            <div className="p-3 bg-orange-50 rounded-xl w-fit mb-4">
+              <Users className="h-6 w-6 text-orange-500" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">Contact Management</h3>
-            <p className="text-slate-600">
+            <h3 className="text-lg font-semibold text-[#0d0c22] mb-2">Contact Management</h3>
+            <p className="text-gray-600">
               Organize and track all your contacts in one place. Never lose touch with important leads.
             </p>
           </div>
           
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-            <div className="p-3 bg-green-100 rounded-xl w-fit mb-4">
-              <BarChart3 className="h-6 w-6 text-green-600" />
+          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:border-gray-200 transition-all">
+            <div className="p-3 bg-green-50 rounded-xl w-fit mb-4">
+              <BarChart3 className="h-6 w-6 text-green-500" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">Deal Pipeline</h3>
-            <p className="text-slate-600">
+            <h3 className="text-lg font-semibold text-[#0d0c22] mb-2">Deal Pipeline</h3>
+            <p className="text-gray-600">
               Visualize your sales pipeline and track deals from lead to close with ease.
             </p>
           </div>
           
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-            <div className="p-3 bg-purple-100 rounded-xl w-fit mb-4">
-              <Shield className="h-6 w-6 text-purple-600" />
+          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:border-gray-200 transition-all">
+            <div className="p-3 bg-purple-50 rounded-xl w-fit mb-4">
+              <Shield className="h-6 w-6 text-purple-500" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">Secure & Private</h3>
-            <p className="text-slate-600">
+            <h3 className="text-lg font-semibold text-[#0d0c22] mb-2">Secure & Private</h3>
+            <p className="text-gray-600">
               Your data is protected with enterprise-grade security and HTTP-only authentication.
             </p>
           </div>
@@ -112,9 +114,9 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 py-8 px-6">
-        <div className="max-w-7xl mx-auto text-center text-sm text-slate-500">
-          © 2024 CRM Pro. All rights reserved.
+      <footer className="border-t border-gray-100 py-8 px-6">
+        <div className="max-w-7xl mx-auto text-center text-sm text-gray-500">
+          © 2024 Commodo. All rights reserved.
         </div>
       </footer>
     </div>

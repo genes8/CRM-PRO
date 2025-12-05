@@ -12,11 +12,29 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+// Dev mode for testing - set to false for production
+const DEV_MODE = import.meta.env.DEV && false;
+
+const mockUser: User = {
+  id: 'dev-user',
+  email: 'leslie.watson@example.com',
+  name: 'Leslie Watson',
+  picture: null,
+  is_active: true,
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(DEV_MODE ? mockUser : null);
+  const [isLoading, setIsLoading] = useState(!DEV_MODE);
 
   const checkAuth = async () => {
+    if (DEV_MODE) {
+      setUser(mockUser);
+      setIsLoading(false);
+      return;
+    }
     try {
       const response = await authApi.check();
       if (response.data.authenticated && response.data.user) {

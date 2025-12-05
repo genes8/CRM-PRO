@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, date
 from typing import Optional
 
 
@@ -9,7 +9,7 @@ class TaskBase(BaseModel):
     task_type: Optional[str] = "task"
     priority: Optional[str] = "medium"
     status: Optional[str] = "pending"
-    due_date: Optional[datetime] = None
+    due_date: Optional[date] = None
     contact_id: Optional[str] = None
 
 
@@ -24,13 +24,20 @@ class TaskUpdate(BaseModel):
     priority: Optional[str] = None
     status: Optional[str] = None
     is_completed: Optional[bool] = None
-    due_date: Optional[datetime] = None
+    due_date: Optional[date] = None
     contact_id: Optional[str] = None
 
 
-class TaskResponse(TaskBase):
+class TaskResponse(BaseModel):
     id: str
     owner_id: str
+    title: str
+    description: Optional[str] = None
+    task_type: Optional[str] = "task"
+    priority: Optional[str] = "medium"
+    status: Optional[str] = "pending"
+    due_date: Optional[datetime] = None
+    contact_id: Optional[str] = None
     is_completed: bool
     completed_at: Optional[datetime] = None
     created_at: datetime

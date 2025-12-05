@@ -16,7 +16,7 @@ import { formatCurrency, formatDate, getStageColor, cn } from '~/lib/utils';
 import type { Deal, DealCreate, DealStage, Contact } from '~/lib/types';
 
 export function meta() {
-  return [{ title: "Deals | CRM Pro" }];
+  return [{ title: "Deals | Commodo" }];
 }
 
 const stageOptions = [
@@ -213,18 +213,15 @@ export default function Deals() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Deals</h1>
-          <p className="text-slate-500 mt-1">Track your sales pipeline</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex bg-slate-100 rounded-lg p-1">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-4">
+          <h3 className="text-base font-semibold text-[#0d0c22]">Deals</h3>
+          <div className="flex bg-gray-100 rounded-lg p-1">
             <button
               onClick={() => setViewMode('pipeline')}
               className={cn(
-                'px-3 py-1.5 text-sm font-medium rounded-md transition-colors',
-                viewMode === 'pipeline' ? 'bg-white shadow text-slate-900' : 'text-slate-600'
+                'px-3 py-1 text-sm font-medium rounded-md transition-colors',
+                viewMode === 'pipeline' ? 'bg-white shadow-sm text-[#0d0c22]' : 'text-gray-500'
               )}
             >
               Pipeline
@@ -232,45 +229,39 @@ export default function Deals() {
             <button
               onClick={() => setViewMode('list')}
               className={cn(
-                'px-3 py-1.5 text-sm font-medium rounded-md transition-colors',
-                viewMode === 'list' ? 'bg-white shadow text-slate-900' : 'text-slate-600'
+                'px-3 py-1 text-sm font-medium rounded-md transition-colors',
+                viewMode === 'list' ? 'bg-white shadow-sm text-[#0d0c22]' : 'text-gray-500'
               )}
             >
               List
             </button>
           </div>
-          <Button onClick={() => openModal()}>
-            <Plus className="h-4 w-4" />
-            Add Deal
-          </Button>
         </div>
-      </div>
-
-      {/* Filters */}
-      <Card padding="sm">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Search deals..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300 w-48"
+            />
           </div>
           {viewMode === 'list' && (
             <Select
               options={stageOptions}
               value={stageFilter}
               onChange={(e) => setStageFilter(e.target.value)}
-              className="w-full sm:w-48"
+              className="w-36"
             />
           )}
+          <Button size="sm" onClick={() => openModal()}>
+            <Plus className="h-4 w-4" />
+            Add
+          </Button>
         </div>
-      </Card>
+      </div>
 
       {/* Pipeline View */}
       {viewMode === 'pipeline' ? (
@@ -532,7 +523,7 @@ export default function Deals() {
             />
           </div>
           <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button type="button" variant="outline" onClick={closeModal}>
+            <Button type="button" variant="secondary" onClick={closeModal}>
               Cancel
             </Button>
             <Button type="submit" isLoading={isSubmitting}>

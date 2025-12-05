@@ -7,7 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   helperText?: string;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, helperText, id, ...props }, ref) => {
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
 
@@ -16,7 +16,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-slate-700 mb-1.5"
+            className="block text-sm font-medium text-[#0d0c22] mb-1.5"
           >
             {label}
           </label>
@@ -25,18 +25,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           className={cn(
-            'w-full px-3 py-2 bg-white border rounded-lg text-slate-900 placeholder:text-slate-400',
-            'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-            'disabled:bg-slate-50 disabled:text-slate-500 disabled:cursor-not-allowed',
+            'w-full px-3 py-2 bg-white border rounded-lg text-[#0d0c22] placeholder:text-gray-400',
+            'focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent',
+            'disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed',
             'transition-all duration-200',
-            error ? 'border-red-500 focus:ring-red-500' : 'border-slate-300',
+            error ? 'border-red-500 focus:ring-red-500' : 'border-gray-200',
             className
           )}
           {...props}
         />
         {error && <p className="mt-1.5 text-sm text-red-600">{error}</p>}
         {helperText && !error && (
-          <p className="mt-1.5 text-sm text-slate-500">{helperText}</p>
+          <p className="mt-1.5 text-sm text-gray-500">{helperText}</p>
         )}
       </div>
     );
@@ -44,5 +44,3 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 );
 
 Input.displayName = 'Input';
-
-export { Input };

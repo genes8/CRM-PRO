@@ -2,14 +2,16 @@ import { useState, useEffect } from 'react';
 import { 
   Plus, 
   Search, 
-  MoreVertical, 
   Mail, 
   Phone, 
   Building2,
   MapPin,
   Trash2,
   Edit,
-  Users
+  Users,
+  X,
+  Calendar,
+  FileText
 } from 'lucide-react';
 import { Card, Button, Input, Select, Badge, Modal, EmptyState, Avatar } from '~/components/ui';
 import { contactsApi } from '~/lib/api';
@@ -17,7 +19,7 @@ import { formatDate, getStatusColor, cn } from '~/lib/utils';
 import type { Contact, ContactCreate, ContactStatus } from '~/lib/types';
 
 export function meta() {
-  return [{ title: "Contacts | CRM Pro" }];
+  return [{ title: "Contacts | Commodo" }];
 }
 
 const statusOptions = [
@@ -46,6 +48,7 @@ export default function Contacts() {
   const [statusFilter, setStatusFilter] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
+  const [viewingContact, setViewingContact] = useState<Contact | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState<ContactCreate>({
@@ -158,132 +161,187 @@ export default function Contacts() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Contacts</h1>
-          <p className="text-slate-500 mt-1">Manage your contacts and leads</p>
-        </div>
-        <Button onClick={() => openModal()}>
-          <Plus className="h-4 w-4" />
-          Add Contact
-        </Button>
-      </div>
-
-      {/* Filters */}
-      <Card padding="sm">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
+      {/* Contacts Table */}
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        {/* Header with filters */}
+        <div className="flex items-center justify-between p-4 border-b border-gray-100">
+          <h3 className="text-base font-semibold text-[#0d0c22]">Contacts</h3>
+          <div className="flex items-center gap-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search contacts..."
+                placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300 w-48"
               />
             </div>
+            <Select
+              options={statusOptions}
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-36"
+            />
+            <Button size="sm" onClick={() => openModal()}>
+              <Plus className="h-4 w-4" />
+              Add
+            </Button>
           </div>
-          <Select
-            options={statusOptions}
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full sm:w-48"
-          />
         </div>
-      </Card>
 
-      {/* Contacts List */}
-      {contacts.length === 0 ? (
-        <Card>
-          <EmptyState
-            icon={Users}
-            title="No contacts yet"
-            description="Get started by adding your first contact"
-            action={
-              <Button onClick={() => openModal()}>
-                <Plus className="h-4 w-4" />
-                Add Contact
-              </Button>
-            }
-          />
-        </Card>
-      ) : (
-        <div className="grid gap-4">
-          {contacts.map((contact) => (
-            <Card key={contact.id} padding="none" className="hover:shadow-md transition-shadow">
-              <div className="p-4 sm:p-6">
-                <div className="flex items-start gap-4">
-                  <Avatar 
-                    name={`${contact.first_name} ${contact.last_name}`} 
-                    size="lg" 
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-4">
+        {/* Table */}
+        {contacts.length === 0 ? (
+          <div className="p-8">
+            <EmptyState
+              icon={Users}
+              title="No contacts yet"
+              description="Get started by adding your first contact"
+              action={
+                <Button onClick={() => openModal()}>
+                  <Plus className="h-4 w-4" />
+                  Add Contact
+                </Button>
+              }
+            />
+          </div>
+        ) : (
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-100 bg-gray-50">
+                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Name</th>
+                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Email</th>
+                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Company</th>
+                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Status</th>
+                <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contacts.map((contact) => (
+                <tr 
+                  key={contact.id} 
+                  className="border-b border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer"
+                  onClick={() => setViewingContact(contact)}
+                >
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <Avatar name={`${contact.first_name} ${contact.last_name}`} size="sm" />
                       <div>
-                        <h3 className="text-lg font-semibold text-slate-900">
+                        <p className="text-sm font-medium text-[#0d0c22]">
                           {contact.first_name} {contact.last_name}
-                        </h3>
-                        {contact.job_title && contact.company && (
-                          <p className="text-sm text-slate-500">
-                            {contact.job_title} at {contact.company}
-                          </p>
+                        </p>
+                        {contact.job_title && (
+                          <p className="text-xs text-gray-500">{contact.job_title}</p>
                         )}
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Badge className={getStatusColor(contact.status)}>
-                          {contact.status}
-                        </Badge>
-                        <div className="flex items-center gap-1">
-                          <button
-                            onClick={() => openModal(contact)}
-                            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-                          >
-                            <Edit className="h-4 w-4" />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(contact.id)}
-                            className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </div>
                     </div>
-                    <div className="flex flex-wrap gap-4 mt-3 text-sm text-slate-600">
-                      {contact.email && (
-                        <a href={`mailto:${contact.email}`} className="flex items-center gap-1.5 hover:text-blue-600">
-                          <Mail className="h-4 w-4" />
-                          {contact.email}
-                        </a>
-                      )}
-                      {contact.phone && (
-                        <a href={`tel:${contact.phone}`} className="flex items-center gap-1.5 hover:text-blue-600">
-                          <Phone className="h-4 w-4" />
-                          {contact.phone}
-                        </a>
-                      )}
-                      {contact.company && (
-                        <span className="flex items-center gap-1.5">
-                          <Building2 className="h-4 w-4" />
-                          {contact.company}
-                        </span>
-                      )}
-                      {(contact.city || contact.country) && (
-                        <span className="flex items-center gap-1.5">
-                          <MapPin className="h-4 w-4" />
-                          {[contact.city, contact.country].filter(Boolean).join(', ')}
-                        </span>
-                      )}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-600">{contact.email || '-'}</td>
+                  <td className="px-4 py-3 text-sm text-gray-600">{contact.company || '-'}</td>
+                  <td className="px-4 py-3">
+                    <Badge className={getStatusColor(contact.status)}>{contact.status}</Badge>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
+                      <button
+                        onClick={() => openModal(contact)}
+                        className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(contact.id)}
+                        className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                     </div>
-                  </div>
-                </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* View Contact Modal */}
+      <Modal
+        isOpen={!!viewingContact}
+        onClose={() => setViewingContact(null)}
+        title="Contact Details"
+      >
+        {viewingContact && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-4 pb-4 border-b border-gray-100">
+              <Avatar name={`${viewingContact.first_name} ${viewingContact.last_name}`} size="lg" />
+              <div>
+                <h3 className="text-lg font-semibold text-[#0d0c22]">
+                  {viewingContact.first_name} {viewingContact.last_name}
+                </h3>
+                {viewingContact.job_title && viewingContact.company && (
+                  <p className="text-sm text-gray-500">{viewingContact.job_title} at {viewingContact.company}</p>
+                )}
+                <Badge className={cn('mt-2', getStatusColor(viewingContact.status))}>{viewingContact.status}</Badge>
               </div>
-            </Card>
-          ))}
-        </div>
-      )}
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              {viewingContact.email && (
+                <div className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 text-gray-400" />
+                  <a href={`mailto:${viewingContact.email}`} className="text-gray-600 hover:text-[#0d0c22]">{viewingContact.email}</a>
+                </div>
+              )}
+              {viewingContact.phone && (
+                <div className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 text-gray-400" />
+                  <a href={`tel:${viewingContact.phone}`} className="text-gray-600 hover:text-[#0d0c22]">{viewingContact.phone}</a>
+                </div>
+              )}
+              {viewingContact.company && (
+                <div className="flex items-center gap-2">
+                  <Building2 className="h-4 w-4 text-gray-400" />
+                  <span className="text-gray-600">{viewingContact.company}</span>
+                </div>
+              )}
+              {(viewingContact.city || viewingContact.country) && (
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-gray-400" />
+                  <span className="text-gray-600">{[viewingContact.city, viewingContact.country].filter(Boolean).join(', ')}</span>
+                </div>
+              )}
+              {viewingContact.source && (
+                <div className="flex items-center gap-2">
+                  <Users className="h-4 w-4 text-gray-400" />
+                  <span className="text-gray-600">Source: {viewingContact.source}</span>
+                </div>
+              )}
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-gray-400" />
+                <span className="text-gray-600">Added: {formatDate(viewingContact.created_at)}</span>
+              </div>
+            </div>
+
+            {viewingContact.notes && (
+              <div className="pt-4 border-t border-gray-100">
+                <div className="flex items-center gap-2 mb-2">
+                  <FileText className="h-4 w-4 text-gray-400" />
+                  <span className="text-sm font-medium text-[#0d0c22]">Notes</span>
+                </div>
+                <p className="text-sm text-gray-600 whitespace-pre-wrap">{viewingContact.notes}</p>
+              </div>
+            )}
+
+            <div className="flex justify-end gap-2 pt-4 border-t border-gray-100">
+              <Button variant="secondary" onClick={() => setViewingContact(null)}>Close</Button>
+              <Button onClick={() => { openModal(viewingContact); setViewingContact(null); }}>
+                <Edit className="h-4 w-4" />
+                Edit
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
 
       {/* Add/Edit Modal */}
       <Modal
@@ -368,7 +426,7 @@ export default function Contacts() {
             />
           </div>
           <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button type="button" variant="outline" onClick={closeModal}>
+            <Button type="button" variant="secondary" onClick={closeModal}>
               Cancel
             </Button>
             <Button type="submit" isLoading={isSubmitting}>

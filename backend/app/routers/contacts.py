@@ -10,7 +10,7 @@ from app.auth import get_current_user
 router = APIRouter(prefix="/contacts", tags=["Contacts"])
 
 
-@router.get("/", response_model=List[ContactResponse])
+@router.get("", response_model=List[ContactResponse])
 async def get_contacts(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=100),
@@ -56,7 +56,7 @@ async def get_contact(
     return contact
 
 
-@router.post("/", response_model=ContactResponse)
+@router.post("", response_model=ContactResponse)
 async def create_contact(
     contact_data: ContactCreate,
     current_user: User = Depends(get_current_user),

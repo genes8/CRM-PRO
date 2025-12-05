@@ -13,7 +13,7 @@ from app.auth import get_current_user
 router = APIRouter(prefix="/analytics", tags=["Analytics"])
 
 
-@router.get("/", response_model=AnalyticsResponse)
+@router.get("", response_model=AnalyticsResponse)
 async def get_analytics(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)

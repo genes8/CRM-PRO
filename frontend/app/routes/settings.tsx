@@ -4,8 +4,8 @@ import {
   Bell, 
   Shield, 
   Palette,
-  Globe,
-  Save
+  Save,
+  Check
 } from 'lucide-react';
 import { Card, CardHeader, Button, Input, Select } from '~/components/ui';
 import { useAuth } from '~/context/AuthContext';
@@ -13,7 +13,7 @@ import { Avatar } from '~/components/ui';
 import { cn } from '~/lib/utils';
 
 export function meta() {
-  return [{ title: "Settings | CRM Pro" }];
+  return [{ title: "Settings | Commodo" }];
 }
 
 const tabs = [
@@ -27,6 +27,7 @@ export default function Settings() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
   const [isSaving, setIsSaving] = useState(false);
+  const [selectedAccentColor, setSelectedAccentColor] = useState(0);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -35,14 +36,17 @@ export default function Settings() {
     setIsSaving(false);
   };
 
+  const accentColors = [
+    { name: 'Orange', bg: 'bg-orange-500', ring: 'ring-orange-500' },
+    { name: 'Blue', bg: 'bg-blue-500', ring: 'ring-blue-500' },
+    { name: 'Green', bg: 'bg-green-500', ring: 'ring-green-500' },
+    { name: 'Purple', bg: 'bg-purple-500', ring: 'ring-purple-500' },
+    { name: 'Red', bg: 'bg-red-500', ring: 'ring-red-500' },
+    { name: 'Pink', bg: 'bg-pink-500', ring: 'ring-pink-500' },
+  ];
+
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
-        <p className="text-slate-500 mt-1">Manage your account preferences</p>
-      </div>
-
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Sidebar */}
         <div className="lg:w-64 flex-shrink-0">
@@ -53,10 +57,10 @@ export default function Settings() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    'w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                    'w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all',
                     activeTab === tab.id
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                      ? 'bg-orange-50 text-orange-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   )}
                 >
                   <tab.icon className="h-5 w-5" />
@@ -77,16 +81,16 @@ export default function Settings() {
               />
               
               {/* Profile Picture */}
-              <div className="flex items-center gap-6 mb-6 pb-6 border-b border-slate-200">
+              <div className="flex items-center gap-6 mb-6 pb-6 border-b border-gray-100">
                 <Avatar 
                   src={user?.picture} 
                   name={user?.name || 'User'} 
                   size="xl" 
                 />
                 <div>
-                  <h3 className="font-medium text-slate-900">{user?.name}</h3>
-                  <p className="text-sm text-slate-500">{user?.email}</p>
-                  <p className="text-xs text-slate-400 mt-1">
+                  <h3 className="font-medium text-[#0d0c22]">{user?.name}</h3>
+                  <p className="text-sm text-gray-500">{user?.email}</p>
+                  <p className="text-xs text-gray-400 mt-1">
                     Profile picture synced from Google
                   </p>
                 </div>
@@ -137,7 +141,7 @@ export default function Settings() {
                 </div>
               </div>
 
-              <div className="flex justify-end mt-6 pt-6 border-t border-slate-200">
+              <div className="flex justify-end mt-6 pt-6 border-t border-gray-100">
                 <Button onClick={handleSave} isLoading={isSaving}>
                   <Save className="h-4 w-4" />
                   Save Changes
@@ -154,52 +158,52 @@ export default function Settings() {
               />
               
               <div className="space-y-6">
-                <div className="flex items-center justify-between py-4 border-b border-slate-100">
+                <div className="flex items-center justify-between py-4 border-b border-gray-100">
                   <div>
-                    <h4 className="font-medium text-slate-900">Email Notifications</h4>
-                    <p className="text-sm text-slate-500">Receive email updates about your activity</p>
+                    <h4 className="font-medium text-[#0d0c22]">Email Notifications</h4>
+                    <p className="text-sm text-gray-500">Receive email updates about your activity</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="sr-only peer" defaultChecked />
-                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
                   </label>
                 </div>
 
-                <div className="flex items-center justify-between py-4 border-b border-slate-100">
+                <div className="flex items-center justify-between py-4 border-b border-gray-100">
                   <div>
-                    <h4 className="font-medium text-slate-900">Task Reminders</h4>
-                    <p className="text-sm text-slate-500">Get reminded about upcoming tasks</p>
+                    <h4 className="font-medium text-[#0d0c22]">Task Reminders</h4>
+                    <p className="text-sm text-gray-500">Get reminded about upcoming tasks</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="sr-only peer" defaultChecked />
-                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
                   </label>
                 </div>
 
-                <div className="flex items-center justify-between py-4 border-b border-slate-100">
+                <div className="flex items-center justify-between py-4 border-b border-gray-100">
                   <div>
-                    <h4 className="font-medium text-slate-900">Deal Updates</h4>
-                    <p className="text-sm text-slate-500">Notifications when deals change status</p>
+                    <h4 className="font-medium text-[#0d0c22]">Deal Updates</h4>
+                    <p className="text-sm text-gray-500">Notifications when deals change status</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="sr-only peer" />
-                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
                   </label>
                 </div>
 
                 <div className="flex items-center justify-between py-4">
                   <div>
-                    <h4 className="font-medium text-slate-900">Weekly Summary</h4>
-                    <p className="text-sm text-slate-500">Receive a weekly summary of your activity</p>
+                    <h4 className="font-medium text-[#0d0c22]">Weekly Summary</h4>
+                    <p className="text-sm text-gray-500">Receive a weekly summary of your activity</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="sr-only peer" defaultChecked />
-                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
                   </label>
                 </div>
               </div>
 
-              <div className="flex justify-end mt-6 pt-6 border-t border-slate-200">
+              <div className="flex justify-end mt-6 pt-6 border-t border-gray-100">
                 <Button onClick={handleSave} isLoading={isSaving}>
                   <Save className="h-4 w-4" />
                   Save Preferences
@@ -216,9 +220,11 @@ export default function Settings() {
               />
               
               <div className="space-y-6">
-                <div className="p-4 bg-green-50 border border-green-200 rounded-xl">
+                <div className="p-4 bg-green-50 border border-green-100 rounded-lg">
                   <div className="flex items-start gap-3">
-                    <Shield className="h-5 w-5 text-green-600 mt-0.5" />
+                    <div className="p-1.5 bg-green-100 rounded-lg">
+                      <Shield className="h-4 w-4 text-green-600" />
+                    </div>
                     <div>
                       <h4 className="font-medium text-green-900">Secure Authentication</h4>
                       <p className="text-sm text-green-700 mt-1">
@@ -228,10 +234,10 @@ export default function Settings() {
                   </div>
                 </div>
 
-                <div className="py-4 border-b border-slate-100">
-                  <h4 className="font-medium text-slate-900 mb-1">Connected Account</h4>
+                <div className="py-4 border-b border-gray-100">
+                  <h4 className="font-medium text-[#0d0c22] mb-1">Connected Account</h4>
                   <div className="flex items-center gap-3 mt-3">
-                    <div className="p-2 bg-white border border-slate-200 rounded-lg">
+                    <div className="p-2 bg-white border border-gray-200 rounded-lg">
                       <svg className="h-5 w-5" viewBox="0 0 24 24">
                         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                         <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -240,20 +246,20 @@ export default function Settings() {
                       </svg>
                     </div>
                     <div>
-                      <p className="font-medium text-slate-900">Google Account</p>
-                      <p className="text-sm text-slate-500">{user?.email}</p>
+                      <p className="font-medium text-[#0d0c22]">Google Account</p>
+                      <p className="text-sm text-gray-500">{user?.email}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="py-4">
-                  <h4 className="font-medium text-slate-900 mb-1">Session Information</h4>
-                  <p className="text-sm text-slate-500 mb-3">
+                  <h4 className="font-medium text-[#0d0c22] mb-1">Session Information</h4>
+                  <p className="text-sm text-gray-500 mb-3">
                     Your session is secured with HTTP-only cookies that cannot be accessed by JavaScript.
                   </p>
-                  <div className="text-sm text-slate-600 space-y-2">
-                    <p><span className="font-medium">Session Duration:</span> 7 days</p>
-                    <p><span className="font-medium">Cookie Type:</span> HTTP-Only, Secure</p>
+                  <div className="text-sm text-gray-600 space-y-2">
+                    <p><span className="font-medium text-[#0d0c22]">Session Duration:</span> 7 days</p>
+                    <p><span className="font-medium text-[#0d0c22]">Cookie Type:</span> HTTP-Only, Secure</p>
                   </div>
                 </div>
               </div>
@@ -264,59 +270,64 @@ export default function Settings() {
             <Card>
               <CardHeader 
                 title="Appearance" 
-                description="Customize how CRM Pro looks"
+                description="Customize how Commodo looks"
               />
               
               <div className="space-y-6">
                 <div>
-                  <h4 className="font-medium text-slate-900 mb-3">Theme</h4>
+                  <h4 className="font-medium text-[#0d0c22] mb-3">Theme</h4>
                   <div className="grid grid-cols-3 gap-4">
-                    <button className="p-4 border-2 border-blue-500 rounded-xl bg-white">
-                      <div className="h-8 bg-white border border-slate-200 rounded mb-2"></div>
-                      <p className="text-sm font-medium text-slate-900">Light</p>
+                    <button className="p-4 border-2 border-orange-500 rounded-lg bg-white">
+                      <div className="h-8 bg-white border border-gray-200 rounded mb-2"></div>
+                      <p className="text-sm font-medium text-[#0d0c22]">Light</p>
                     </button>
-                    <button className="p-4 border-2 border-slate-200 rounded-xl bg-white hover:border-slate-300 transition-colors">
-                      <div className="h-8 bg-slate-800 rounded mb-2"></div>
-                      <p className="text-sm font-medium text-slate-900">Dark</p>
+                    <button className="p-4 border-2 border-gray-200 rounded-lg bg-white hover:border-gray-300 transition-colors">
+                      <div className="h-8 bg-[#0d0c22] rounded mb-2"></div>
+                      <p className="text-sm font-medium text-[#0d0c22]">Dark</p>
                     </button>
-                    <button className="p-4 border-2 border-slate-200 rounded-xl bg-white hover:border-slate-300 transition-colors">
-                      <div className="h-8 bg-gradient-to-r from-white to-slate-800 rounded mb-2"></div>
-                      <p className="text-sm font-medium text-slate-900">System</p>
+                    <button className="p-4 border-2 border-gray-200 rounded-lg bg-white hover:border-gray-300 transition-colors">
+                      <div className="h-8 bg-gradient-to-r from-white to-[#0d0c22] rounded mb-2"></div>
+                      <p className="text-sm font-medium text-[#0d0c22]">System</p>
                     </button>
                   </div>
                 </div>
 
-                <div className="py-4 border-t border-slate-100">
-                  <h4 className="font-medium text-slate-900 mb-3">Accent Color</h4>
+                <div className="py-4 border-t border-gray-100">
+                  <h4 className="font-medium text-[#0d0c22] mb-3">Accent Color</h4>
                   <div className="flex gap-3">
-                    {['bg-blue-500', 'bg-purple-500', 'bg-green-500', 'bg-amber-500', 'bg-red-500', 'bg-pink-500'].map((color, index) => (
+                    {accentColors.map((color, index) => (
                       <button
-                        key={color}
+                        key={color.name}
+                        onClick={() => setSelectedAccentColor(index)}
                         className={cn(
-                          'h-8 w-8 rounded-full transition-transform hover:scale-110',
-                          color,
-                          index === 0 && 'ring-2 ring-offset-2 ring-blue-500'
+                          'h-8 w-8 rounded-full transition-all hover:scale-110 flex items-center justify-center',
+                          color.bg,
+                          selectedAccentColor === index && `ring-2 ring-offset-2 ${color.ring}`
                         )}
-                      />
+                      >
+                        {selectedAccentColor === index && (
+                          <Check className="h-4 w-4 text-white" />
+                        )}
+                      </button>
                     ))}
                   </div>
                 </div>
 
-                <div className="py-4 border-t border-slate-100">
+                <div className="py-4 border-t border-gray-100">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-medium text-slate-900">Compact Mode</h4>
-                      <p className="text-sm text-slate-500">Reduce spacing for more content</p>
+                      <h4 className="font-medium text-[#0d0c22]">Compact Mode</h4>
+                      <p className="text-sm text-gray-500">Reduce spacing for more content</p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" className="sr-only peer" />
-                      <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
                     </label>
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-end mt-6 pt-6 border-t border-slate-200">
+              <div className="flex justify-end mt-6 pt-6 border-t border-gray-100">
                 <Button onClick={handleSave} isLoading={isSaving}>
                   <Save className="h-4 w-4" />
                   Save Preferences

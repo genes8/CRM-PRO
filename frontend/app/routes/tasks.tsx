@@ -18,7 +18,7 @@ import { formatDate, getPriorityColor, getTaskStatusColor, cn } from '~/lib/util
 import type { Task, TaskCreate, TaskType, TaskPriority, TaskStatus, Contact } from '~/lib/types';
 
 export function meta() {
-  return [{ title: "Tasks | CRM Pro" }];
+  return [{ title: "Tasks | Commodo" }];
 }
 
 const statusOptions = [
@@ -196,47 +196,38 @@ export default function Tasks() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Tasks</h1>
-          <p className="text-slate-500 mt-1">Manage your tasks and activities</p>
-        </div>
-        <Button onClick={() => openModal()}>
-          <Plus className="h-4 w-4" />
-          Add Task
-        </Button>
-      </div>
-
-      {/* Filters */}
-      <Card padding="sm">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Search tasks..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+      {/* Header with filters */}
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-base font-semibold text-[#0d0c22]">Tasks</h3>
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300 w-48"
+            />
           </div>
           <Select
             options={statusOptions}
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full sm:w-40"
+            className="w-32"
           />
           <Select
             options={priorityOptions}
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
-            className="w-full sm:w-40"
+            className="w-32"
           />
+          <Button size="sm" onClick={() => openModal()}>
+            <Plus className="h-4 w-4" />
+            Add
+          </Button>
         </div>
-      </Card>
+      </div>
 
       {/* Tasks List */}
       {tasks.length === 0 ? (
@@ -457,7 +448,7 @@ export default function Tasks() {
             onChange={(e) => setFormData({ ...formData, contact_id: e.target.value })}
           />
           <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button type="button" variant="outline" onClick={closeModal}>
+            <Button type="button" variant="secondary" onClick={closeModal}>
               Cancel
             </Button>
             <Button type="submit" isLoading={isSubmitting}>

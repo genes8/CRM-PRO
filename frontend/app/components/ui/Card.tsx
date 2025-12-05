@@ -1,28 +1,25 @@
-import { type ReactNode } from 'react';
 import { cn } from '~/lib/utils';
 
 interface CardProps {
-  children: ReactNode;
+  children: React.ReactNode;
   className?: string;
   padding?: 'none' | 'sm' | 'md' | 'lg';
 }
 
-export function Card({ children, className, padding = 'md' }: CardProps) {
-  const paddingStyles = {
-    none: '',
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8',
-  };
+const paddingStyles = {
+  none: '',
+  sm: 'p-4',
+  md: 'p-6',
+  lg: 'p-8',
+};
 
+export function Card({ children, className, padding = 'md' }: CardProps) {
   return (
-    <div
-      className={cn(
-        'bg-white rounded-xl border border-slate-200 shadow-sm',
-        paddingStyles[padding],
-        className
-      )}
-    >
+    <div className={cn(
+      'bg-white rounded-xl border border-gray-200',
+      paddingStyles[padding],
+      className
+    )}>
       {children}
     </div>
   );
@@ -31,17 +28,16 @@ export function Card({ children, className, padding = 'md' }: CardProps) {
 interface CardHeaderProps {
   title: string;
   description?: string;
-  action?: ReactNode;
-  className?: string;
+  action?: React.ReactNode;
 }
 
-export function CardHeader({ title, description, action, className }: CardHeaderProps) {
+export function CardHeader({ title, description, action }: CardHeaderProps) {
   return (
-    <div className={cn('flex items-start justify-between mb-4', className)}>
+    <div className="flex items-start justify-between mb-5">
       <div>
-        <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+        <h3 className="text-base font-semibold text-[#0d0c22]">{title}</h3>
         {description && (
-          <p className="text-sm text-slate-500 mt-0.5">{description}</p>
+          <p className="text-sm text-gray-400 mt-0.5">{description}</p>
         )}
       </div>
       {action && <div>{action}</div>}
