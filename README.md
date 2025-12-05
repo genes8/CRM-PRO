@@ -16,7 +16,7 @@ A professional CRM application with an elegant design, built with FastAPI and Re
 
 ### Backend
 - **FastAPI** - Modern Python web framework
-- **SQLite** - Lightweight database
+- **SQLite** - Lightweight database for development
 - **SQLAlchemy** - ORM for database operations
 - **Google OAuth** - Authentication via Google
 - **HTTP-Only Cookies** - Secure session management
@@ -61,7 +61,7 @@ pip3 install -r requirements.txt
 cp .env.example .env
 # Edit .env and add your GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET
 
-# Run the server
+# Run the server (database tables are created automatically)
 uvicorn app.main:app --reload --port 8000
 ```
 
