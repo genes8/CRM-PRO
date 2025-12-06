@@ -37,11 +37,11 @@ function StatCard({
   href: string;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5">
-      <p className="text-sm text-gray-500 mb-1">{title}</p>
+    <div className="bg-white rounded-xl border border-gray-200 p-4">
+      <p className="text-xs text-gray-500 mb-1">{title}</p>
       <div className="flex items-end justify-between">
         <div>
-          <p className="text-[28px] font-semibold text-[#0d0c22] leading-tight">{value}</p>
+          <p className="text-2xl font-semibold text-[#0d0c22] leading-tight">{value}</p>
           {change && (
             <p className="text-xs text-gray-400 mt-1">
               vs last month{' '}
@@ -147,7 +147,7 @@ export default function Dashboard() {
   const isEmpty = analytics && analytics.total_contacts === 0 && analytics.total_deals === 0;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {/* Top Bar with Actions */}
       <div className="flex items-center justify-between">
         <div>
@@ -162,7 +162,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats Cards Row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <StatCard 
           title="Active Sales" 
           value={`$${((analytics?.total_deal_value || 0) / 1000).toFixed(0)},${String((analytics?.total_deal_value || 0) % 1000).padStart(3, '0').slice(0, 3)}`}
@@ -187,13 +187,13 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid lg:grid-cols-3 gap-5">
+      <div className="grid lg:grid-cols-3 gap-4">
         {/* Analytics Chart Section */}
-        <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-8">
+        <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-[#0d0c22]">Revenue Analytics</h3>
-              <p className="text-sm text-gray-500 mt-0.5">
+              <h3 className="text-sm font-semibold text-[#0d0c22]">Revenue Analytics</h3>
+              <p className="text-xs text-gray-500 mt-0.5">
                 {chartPeriod === 'weekly' ? 'Last 7 weeks' : chartPeriod === 'monthly' ? 'Monthly revenue this year' : 'Yearly revenue trends'}
               </p>
             </div>
@@ -249,31 +249,31 @@ export default function Dashboard() {
               : 0;
 
             return (
-              <div className="flex items-center gap-8 mb-6">
-                <div className="flex items-center gap-3">
+              <div className="flex items-center gap-6 mb-4">
+                <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-gradient-to-r from-violet-500 to-purple-500"></div>
                   <div>
                     <p className="text-xs text-gray-500">Total Revenue</p>
-                    <p className="text-lg font-semibold text-[#0d0c22]">{formatCurrency(totalRevenue)}</p>
+                    <p className="text-sm font-semibold text-[#0d0c22]">{formatCurrency(totalRevenue)}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-gradient-to-r from-emerald-400 to-teal-500"></div>
                   <div>
                     <p className="text-xs text-gray-500">Growth Rate</p>
                     <p className={cn(
-                      "text-lg font-semibold",
+                      "text-sm font-semibold",
                       growthRate >= 0 ? "text-emerald-600" : "text-red-500"
                     )}>
                       {growthRate >= 0 ? '+' : ''}{growthRate.toFixed(1)}%
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-gradient-to-r from-amber-400 to-orange-500"></div>
                   <div>
                     <p className="text-xs text-gray-500">Avg. Monthly</p>
-                    <p className="text-lg font-semibold text-[#0d0c22]">{formatCurrency(avgMonthly)}</p>
+                    <p className="text-sm font-semibold text-[#0d0c22]">{formatCurrency(avgMonthly)}</p>
                   </div>
                 </div>
               </div>
@@ -323,7 +323,7 @@ export default function Dashboard() {
             const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
             return (
-              <div className="h-56 relative">
+              <div className="h-48 relative">
                 {/* Grid lines */}
                 <div className="absolute inset-0 ml-12 flex flex-col justify-between pointer-events-none">
                   {[0, 1, 2, 3, 4].map((i) => (
@@ -389,17 +389,17 @@ export default function Dashboard() {
         </div>
 
         {/* Customers Active Section */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h3 className="text-base font-semibold text-[#0d0c22] mb-1">Customers Active</h3>
-          <p className="text-[32px] font-semibold text-[#0d0c22]">
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <h3 className="text-sm font-semibold text-[#0d0c22] mb-1">Customers Active</h3>
+          <p className="text-2xl font-semibold text-[#0d0c22]">
             {((analytics?.total_contacts || 0) * 100 + 48928).toLocaleString()}
-            <span className="text-sm font-normal text-gray-400 ml-2">Accounts</span>
+            <span className="text-xs font-normal text-gray-400 ml-2">Accounts</span>
           </p>
-          <p className="text-xs text-gray-400 mb-6">
+          <p className="text-xs text-gray-400 mb-4">
             Compare from last month is <span className="text-green-500 font-medium">36,738</span> accounts
           </p>
-          
-          <div className="space-y-4">
+
+          <div className="space-y-3">
             <CountryProgress country="United States" flag="🇺🇸" value="19,814" percentage={87} />
             <CountryProgress country="Italy" flag="🇮🇹" value="12,650" percentage={64} />
             <CountryProgress country="Germany" flag="🇩🇪" value="16,431" percentage={78} />
@@ -409,9 +409,9 @@ export default function Dashboard() {
 
       {/* Sales Data Table */}
       <div className="bg-white rounded-xl border border-gray-200">
-        <div className="flex items-center justify-between p-5 border-b border-gray-100">
-          <h3 className="text-base font-semibold text-[#0d0c22]">Sales Data Table</h3>
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between p-4 border-b border-gray-100">
+          <h3 className="text-sm font-semibold text-[#0d0c22]">Sales Data Table</h3>
+          <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
@@ -436,12 +436,12 @@ export default function Dashboard() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-100">
-                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-5 py-3">Transaction ID</th>
-                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-5 py-3">Customer Name</th>
-                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-5 py-3">Customer Email</th>
-                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-5 py-3">Product/Service</th>
-                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-5 py-3">Deal Value</th>
-                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-5 py-3">Date</th>
+                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Transaction ID</th>
+                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Customer Name</th>
+                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Customer Email</th>
+                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Product/Service</th>
+                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Deal Value</th>
+                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Date</th>
               </tr>
             </thead>
             <tbody>
@@ -456,19 +456,19 @@ export default function Dashboard() {
                 };
                 return (
                   <tr key={index} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                    <td className="px-5 py-4 text-sm text-gray-600">{transaction.id}</td>
-                    <td className="px-5 py-4">
+                    <td className="px-4 py-3 text-sm text-gray-600">{transaction.id}</td>
+                    <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <Avatar name={transaction.name} size="sm" />
                         <span className="text-sm font-medium text-[#0d0c22]">{transaction.name}</span>
                       </div>
                     </td>
-                    <td className="px-5 py-4 text-sm text-gray-500">{transaction.email}</td>
-                    <td className="px-5 py-4">
+                    <td className="px-4 py-3 text-sm text-gray-500">{transaction.email}</td>
+                    <td className="px-4 py-3">
                       <Badge variant="orange">{transaction.product}</Badge>
                     </td>
-                    <td className="px-5 py-4 text-sm font-medium text-[#0d0c22]">{transaction.value}</td>
-                    <td className="px-5 py-4 text-sm text-gray-500">{transaction.date}</td>
+                    <td className="px-4 py-3 text-sm font-medium text-[#0d0c22]">{transaction.value}</td>
+                    <td className="px-4 py-3 text-sm text-gray-500">{transaction.date}</td>
                   </tr>
                 );
               })}
