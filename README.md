@@ -7,10 +7,28 @@ A professional CRM application with an elegant design, built with FastAPI and Re
 - **Google OAuth Authentication** with HTTP-Only Cookies for security
 - **Dashboard** - Overview of contacts, deals, tasks, and analytics
 - **Contacts Management** - Full CRUD for contacts with status tracking
-- **Deals Pipeline** - Kanban-style pipeline view and list view
+- **Deals Pipeline** - Kanban-style pipeline view with drag & drop and list view
+  - **Deal Details View** - Click any deal to view full details including notes
+  - **Edit Mode** - Edit deal information with intuitive form controls
+  - **Drag & Drop** - Move deals between stages by dragging
+  - **Pipeline & List Views** - Toggle between kanban pipeline and compact list
 - **Tasks** - Task management with priorities, types, and due dates
 - **Analytics** - Charts and metrics for business insights
 - **Settings** - Profile, notifications, security, and appearance settings
+
+## Latest Updates
+
+### Deal Management Enhancements
+- **Deal Details View**: Click on any deal to view complete details in a read-only modal
+- **Notes Display**: View deal notes in an elegant, formatted box
+- **Seamless Editing**: Switch from view mode to edit mode with one click
+- **Optimized Pipeline**: Reduced column width and spacing for better screen utilization
+- **Enhanced Click Targets**: Entire deal cards are clickable for better UX
+
+### UI/UX Improvements
+- **Pipeline Layout**: Optimized column widths (192px vs 224px) and gaps (8px vs 12px)
+- **Better Visual Hierarchy**: Improved spacing and typography in deal cards
+- **Intuitive Navigation**: Clear separation between view and edit actions
 
 ## Tech Stack
 
@@ -22,7 +40,7 @@ A professional CRM application with an elegant design, built with FastAPI and Re
 - **HTTP-Only Cookies** - Secure session management
 
 ### Frontend
-- **React Router v7** - Full-stack React framework
+- **React Router v7** - React routing library
 - **TypeScript** - Type-safe JavaScript
 - **TailwindCSS** - Utility-first CSS framework
 - **Lucide Icons** - Beautiful icon set

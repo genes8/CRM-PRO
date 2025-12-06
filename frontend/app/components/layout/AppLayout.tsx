@@ -25,7 +25,7 @@ export default function AppLayout() {
     <div className="min-h-screen bg-[#f8f8f8]">
       <Sidebar />
       <Header />
-      <main className="ml-60 pt-14 min-h-screen">
+      <main className="ml-48 pt-14 min-h-screen">
         <div className="p-4">
           <Outlet />
         </div>

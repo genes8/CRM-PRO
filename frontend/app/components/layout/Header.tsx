@@ -55,7 +55,7 @@ export function Header() {
   }, [isSearchOpen]);
 
   return (
-    <header className="fixed top-0 right-0 left-60 z-30 h-14 bg-white border-b border-gray-200">
+    <header className="fixed top-0 right-0 left-48 z-30 h-14 bg-white border-b border-gray-200">
       <div className="flex items-center justify-between h-full px-6">
         {/* Page Title */}
         <h1 className="text-lg font-semibold text-[#0d0c22]">{currentTitle}</h1>
