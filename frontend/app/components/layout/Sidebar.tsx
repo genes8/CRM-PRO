@@ -1,11 +1,9 @@
 import { NavLink } from 'react-router';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Briefcase, 
+import {
+  LayoutDashboard,
+  Users,
+  Briefcase,
   CheckSquare,
-  Settings,
-  HelpCircle,
   Search,
   BarChart3
 } from 'lucide-react';
@@ -17,11 +15,6 @@ const mainMenuNavigation = [
   { name: 'Deals', href: '/deals', icon: Briefcase },
   { name: 'Tasks', href: '/tasks', icon: CheckSquare },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
-];
-
-const bottomNavigation = [
-  { name: 'Help', href: '/help', icon: HelpCircle },
-  { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
 export function Sidebar() {
@@ -74,26 +67,20 @@ export function Sidebar() {
         {/* Spacer */}
         <div className="flex-1" />
 
-        {/* Bottom Navigation */}
+        {/* Help Card */}
         <div className="px-3 py-4 border-t border-gray-100">
-          <ul className="space-y-0.5">
-            {bottomNavigation.map((item) => (
-              <li key={item.name}>
-                <NavLink
-                  to={item.href}
-                  className={({ isActive }) => cn(
-                    'flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-all',
-                    isActive
-                      ? 'bg-[#0d0c22] text-white'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#0d0c22]'
-                  )}
-                >
-                  <item.icon className="h-[18px] w-[18px]" />
-                  {item.name}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+          <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-xl">
+            <h4 className="text-[#0d0c22] font-semibold text-[14px] mb-1">Need Help?</h4>
+            <p className="text-gray-500 text-[12px] leading-relaxed mb-3">
+              Check our documentation for guides and tutorials.
+            </p>
+            <a
+              href="#"
+              className="text-[#0d0c22] font-medium text-[12px] hover:underline"
+            >
+              View Documentation →
+            </a>
+          </div>
         </div>
       </div>
     </aside>
