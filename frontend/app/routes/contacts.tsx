@@ -19,7 +19,7 @@ import { formatDate, getStatusColor, cn } from '~/lib/utils';
 import type { Contact, ContactCreate, ContactStatus } from '~/lib/types';
 
 export function meta() {
-  return [{ title: "Contacts | Commodo" }];
+  return [{ title: "Contacts | CRM Pro" }];
 }
 
 const statusOptions = [
@@ -165,7 +165,6 @@ export default function Contacts() {
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         {/* Header with filters */}
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
-          <h3 className="text-base font-semibold text-[#0d0c22]">Contacts</h3>
           <div className="flex items-center gap-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />

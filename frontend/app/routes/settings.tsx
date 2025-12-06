@@ -13,7 +13,7 @@ import { Avatar } from '~/components/ui';
 import { cn } from '~/lib/utils';
 
 export function meta() {
-  return [{ title: "Settings | Commodo" }];
+  return [{ title: "Settings | CRM Pro" }];
 }
 
 const tabs = [
@@ -270,7 +270,7 @@ export default function Settings() {
             <Card>
               <CardHeader 
                 title="Appearance" 
-                description="Customize how Commodo looks"
+                description="Customize how CRM Pro looks"
               />
               
               <div className="space-y-6">

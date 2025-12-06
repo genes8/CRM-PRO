@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, extract
 from datetime import datetime, timedelta
 from app.database import get_db
 from app.models.contact import Contact
 from app.models.deal import Deal
 from app.models.task import Task
 from app.models.user import User
-from app.schemas.analytics import AnalyticsResponse, DealsByStage, TasksByStatus, ContactsByStatus, RecentActivity
+from app.schemas.analytics import AnalyticsResponse, DealsByStage, TasksByStatus, ContactsByStatus, RecentActivity, MonthlyRevenue, WeeklyRevenue, YearlyRevenue
 from app.auth import get_current_user
 
 router = APIRouter(prefix="/analytics", tags=["Analytics"])
@@ -133,7 +133,80 @@ async def get_analytics(
     # Sort by timestamp
     recent_activities.sort(key=lambda x: x.timestamp, reverse=True)
     recent_activities = recent_activities[:10]
-    
+
+    # Monthly revenue (last 12 months)
+    current_year = datetime.utcnow().year
+    monthly_revenue = []
+    for month in range(1, 13):
+        month_start = datetime(current_year, month, 1)
+        if month == 12:
+            month_end = datetime(current_year + 1, 1, 1)
+        else:
+            month_end = datetime(current_year, month + 1, 1)
+
+        month_deals = db.query(
+            func.coalesce(func.sum(Deal.value), 0).label('revenue'),
+            func.count(Deal.id).label('count')
+        ).filter(
+            Deal.owner_id == current_user.id,
+            Deal.stage == "closed_won",
+            Deal.actual_close_date >= month_start,
+            Deal.actual_close_date < month_end
+        ).first()
+
+        monthly_revenue.append(MonthlyRevenue(
+            month=month,
+            year=current_year,
+            revenue=float(month_deals[0]) if month_deals[0] else 0.0,
+            deals_count=month_deals[1] if month_deals[1] else 0
+        ))
+
+    # Weekly revenue (last 7 weeks)
+    weekly_revenue = []
+    today = datetime.utcnow()
+    for i in range(6, -1, -1):
+        week_start = today - timedelta(days=today.weekday() + (i * 7))
+        week_start = week_start.replace(hour=0, minute=0, second=0, microsecond=0)
+        week_end = week_start + timedelta(days=7)
+
+        week_deals = db.query(
+            func.coalesce(func.sum(Deal.value), 0).label('revenue'),
+            func.count(Deal.id).label('count')
+        ).filter(
+            Deal.owner_id == current_user.id,
+            Deal.stage == "closed_won",
+            Deal.actual_close_date >= week_start,
+            Deal.actual_close_date < week_end
+        ).first()
+
+        weekly_revenue.append(WeeklyRevenue(
+            week_start=week_start.strftime('%Y-%m-%d'),
+            revenue=float(week_deals[0]) if week_deals[0] else 0.0,
+            deals_count=week_deals[1] if week_deals[1] else 0
+        ))
+
+    # Yearly revenue (last 5 years)
+    yearly_revenue = []
+    for year in range(current_year - 4, current_year + 1):
+        year_start = datetime(year, 1, 1)
+        year_end = datetime(year + 1, 1, 1)
+
+        year_deals = db.query(
+            func.coalesce(func.sum(Deal.value), 0).label('revenue'),
+            func.count(Deal.id).label('count')
+        ).filter(
+            Deal.owner_id == current_user.id,
+            Deal.stage == "closed_won",
+            Deal.actual_close_date >= year_start,
+            Deal.actual_close_date < year_end
+        ).first()
+
+        yearly_revenue.append(YearlyRevenue(
+            year=year,
+            revenue=float(year_deals[0]) if year_deals[0] else 0.0,
+            deals_count=year_deals[1] if year_deals[1] else 0
+        ))
+
     return AnalyticsResponse(
         total_contacts=total_contacts,
         total_deals=total_deals,
@@ -145,5 +218,8 @@ async def get_analytics(
         conversion_rate=round(conversion_rate, 2),
         tasks_completed_this_week=tasks_completed_this_week,
         deals_closed_this_month=deals_closed_this_month,
-        recent_activities=recent_activities
+        recent_activities=recent_activities,
+        monthly_revenue=monthly_revenue,
+        weekly_revenue=weekly_revenue,
+        yearly_revenue=yearly_revenue
     )

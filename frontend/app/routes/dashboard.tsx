@@ -18,34 +18,9 @@ import { formatCurrency, formatRelativeTime, cn } from '~/lib/utils';
 import type { Analytics } from '~/lib/types';
 
 export function meta() {
-  return [{ title: "Dashboard | Commodo" }];
+  return [{ title: "Dashboard | CRM Pro" }];
 }
 
-// Tab component
-function Tabs({ tabs, activeTab, onChange }: { 
-  tabs: string[]; 
-  activeTab: string; 
-  onChange: (tab: string) => void;
-}) {
-  return (
-    <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg w-fit">
-      {tabs.map((tab) => (
-        <button
-          key={tab}
-          onClick={() => onChange(tab)}
-          className={cn(
-            'px-4 py-1.5 text-sm font-medium rounded-md transition-all',
-            activeTab === tab
-              ? 'bg-white text-[#0d0c22] shadow-sm'
-              : 'text-gray-500 hover:text-gray-700'
-          )}
-        >
-          {tab}
-        </button>
-      ))}
-    </div>
-  );
-}
 
 // Stat Card component matching the design
 function StatCard({ 
@@ -132,7 +107,7 @@ export default function Dashboard() {
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSeeding, setIsSeeding] = useState(false);
-  const [activeTab, setActiveTab] = useState('Overview');
+  const [chartPeriod, setChartPeriod] = useState<'weekly' | 'monthly' | 'yearly'>('monthly');
 
   useEffect(() => {
     loadAnalytics();
@@ -173,29 +148,17 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-5">
-      {/* Top Bar with Tabs and Actions */}
+      {/* Top Bar with Actions */}
       <div className="flex items-center justify-between">
-        <Tabs 
-          tabs={['Overview', 'Sales', 'Order']} 
-          activeTab={activeTab} 
-          onChange={setActiveTab} 
-        />
-        <div className="flex items-center gap-2">
+        <div>
           {isEmpty && (
             <Button onClick={handleSeedData} isLoading={isSeeding} size="sm">
               <Plus className="h-4 w-4" />
               Load Example Data
             </Button>
           )}
-          <button className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-            <Filter className="h-4 w-4" />
-            Filter
-          </button>
-          <button className="flex items-center gap-2 px-3 py-1.5 text-sm text-white bg-[#0d0c22] rounded-lg hover:bg-[#1a1930] transition-colors">
-            <Download className="h-4 w-4" />
-            Export
-          </button>
         </div>
+        <div></div>
       </div>
 
       {/* Stats Cards Row */}
@@ -226,68 +189,203 @@ export default function Dashboard() {
       {/* Main Content Grid */}
       <div className="grid lg:grid-cols-3 gap-5">
         {/* Analytics Chart Section */}
-        <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-5">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-base font-semibold text-[#0d0c22]">Analytics</h3>
-            <div className="flex items-center gap-3">
-              <button className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">
-                <Filter className="h-4 w-4" />
-                Filter
-              </button>
-              <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
-                <button className="px-3 py-1 text-sm text-gray-500 rounded-md">This Year</button>
-                <button className="px-3 py-1 text-sm bg-white text-[#0d0c22] rounded-md shadow-sm">Last Year</button>
+        <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h3 className="text-lg font-semibold text-[#0d0c22]">Revenue Analytics</h3>
+              <p className="text-sm text-gray-500 mt-0.5">
+                {chartPeriod === 'weekly' ? 'Last 7 weeks' : chartPeriod === 'monthly' ? 'Monthly revenue this year' : 'Yearly revenue trends'}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center bg-gray-100/80 p-1 rounded-lg">
+                <button
+                  onClick={() => setChartPeriod('weekly')}
+                  className={cn(
+                    "px-4 py-1.5 text-sm font-medium rounded-md transition-all",
+                    chartPeriod === 'weekly'
+                      ? "bg-white text-[#0d0c22] shadow-sm"
+                      : "text-gray-500 hover:text-gray-700"
+                  )}
+                >
+                  Weekly
+                </button>
+                <button
+                  onClick={() => setChartPeriod('monthly')}
+                  className={cn(
+                    "px-4 py-1.5 text-sm font-medium rounded-md transition-all",
+                    chartPeriod === 'monthly'
+                      ? "bg-white text-[#0d0c22] shadow-sm"
+                      : "text-gray-500 hover:text-gray-700"
+                  )}
+                >
+                  Monthly
+                </button>
+                <button
+                  onClick={() => setChartPeriod('yearly')}
+                  className={cn(
+                    "px-4 py-1.5 text-sm font-medium rounded-md transition-all",
+                    chartPeriod === 'yearly'
+                      ? "bg-white text-[#0d0c22] shadow-sm"
+                      : "text-gray-500 hover:text-gray-700"
+                  )}
+                >
+                  Yearly
+                </button>
               </div>
             </div>
           </div>
-          
-          {/* Chart Area */}
-          <div className="h-64 relative">
-            {/* Y-axis labels */}
-            <div className="absolute left-0 top-0 bottom-6 flex flex-col justify-between text-xs text-gray-400 w-8">
-              <span>$5K</span>
-              <span>$4K</span>
-              <span>$3K</span>
-              <span>$2K</span>
-              <span>$1K</span>
-              <span>0</span>
-            </div>
-            
-            {/* Chart content */}
-            <div className="ml-10 h-[calc(100%-24px)] flex items-end gap-3 pb-0 border-b border-gray-100">
-              {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, i) => {
-                const heights = [60, 70, 80, 90, 100, 110, 120, 130, 150, 170, 140, 120];
-                const maxHeight = 180;
-                const barHeight = (heights[i] / maxHeight) * 100;
-                const isHighlighted = month === 'Oct';
-                return (
-                  <div key={month} className="flex-1 flex flex-col items-center h-full justify-end">
-                    <div className="relative w-full flex justify-center h-full items-end">
-                      {isHighlighted && (
-                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-[#0d0c22] text-white text-xs px-2 py-1 rounded-md whitespace-nowrap z-10">
-                          Oct, 2024<br/>$3,722 - 7.2%
-                        </div>
-                      )}
-                      <div 
-                        className={cn(
-                          'w-2 rounded-t-sm transition-all',
-                          isHighlighted ? 'bg-orange-500' : 'bg-orange-200 hover:bg-orange-300'
-                        )}
-                        style={{ height: `${barHeight}%`, minHeight: '8px' }}
-                      />
-                    </div>
+
+          {/* Stats Summary */}
+          {(() => {
+            const totalRevenue = analytics?.total_deal_value || 0;
+            const monthlyData = analytics?.monthly_revenue || [];
+            const currentMonth = new Date().getMonth() + 1;
+            const currentMonthRevenue = monthlyData.find(m => m.month === currentMonth)?.revenue || 0;
+            const lastMonthRevenue = monthlyData.find(m => m.month === currentMonth - 1)?.revenue || 0;
+            const growthRate = lastMonthRevenue > 0 ? ((currentMonthRevenue - lastMonthRevenue) / lastMonthRevenue * 100) : 0;
+            const avgMonthly = monthlyData.length > 0
+              ? monthlyData.reduce((sum, m) => sum + m.revenue, 0) / monthlyData.filter(m => m.revenue > 0).length || 0
+              : 0;
+
+            return (
+              <div className="flex items-center gap-8 mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-violet-500 to-purple-500"></div>
+                  <div>
+                    <p className="text-xs text-gray-500">Total Revenue</p>
+                    <p className="text-lg font-semibold text-[#0d0c22]">{formatCurrency(totalRevenue)}</p>
                   </div>
-                );
-              })}
-            </div>
-            
-            {/* X-axis labels */}
-            <div className="ml-10 flex gap-3 text-xs text-gray-400 pt-1.5">
-              {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month) => (
-                <span key={month} className="flex-1 text-center">{month}</span>
-              ))}
-            </div>
-          </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+                  <div>
+                    <p className="text-xs text-gray-500">Growth Rate</p>
+                    <p className={cn(
+                      "text-lg font-semibold",
+                      growthRate >= 0 ? "text-emerald-600" : "text-red-500"
+                    )}>
+                      {growthRate >= 0 ? '+' : ''}{growthRate.toFixed(1)}%
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-amber-400 to-orange-500"></div>
+                  <div>
+                    <p className="text-xs text-gray-500">Avg. Monthly</p>
+                    <p className="text-lg font-semibold text-[#0d0c22]">{formatCurrency(avgMonthly)}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Chart Area */}
+          {(() => {
+            let chartData: { label: string; revenue: number; deals: number }[] = [];
+            let maxRevenue = 0;
+
+            if (chartPeriod === 'monthly' && analytics?.monthly_revenue) {
+              const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+              chartData = analytics.monthly_revenue.map(m => ({
+                label: monthNames[m.month - 1],
+                revenue: m.revenue,
+                deals: m.deals_count
+              }));
+              maxRevenue = Math.max(...chartData.map(d => d.revenue), 1);
+            } else if (chartPeriod === 'weekly' && analytics?.weekly_revenue) {
+              chartData = analytics.weekly_revenue.map(w => {
+                const date = new Date(w.week_start);
+                return {
+                  label: `${date.getMonth() + 1}/${date.getDate()}`,
+                  revenue: w.revenue,
+                  deals: w.deals_count
+                };
+              });
+              maxRevenue = Math.max(...chartData.map(d => d.revenue), 1);
+            } else if (chartPeriod === 'yearly' && analytics?.yearly_revenue) {
+              chartData = analytics.yearly_revenue.map(y => ({
+                label: y.year.toString(),
+                revenue: y.revenue,
+                deals: y.deals_count
+              }));
+              maxRevenue = Math.max(...chartData.map(d => d.revenue), 1);
+            }
+
+            const formatAxisValue = (value: number) => {
+              if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
+              if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`;
+              return `$${value}`;
+            };
+
+            const yAxisValues = [maxRevenue, maxRevenue * 0.75, maxRevenue * 0.5, maxRevenue * 0.25, 0];
+            const currentMonth = new Date().getMonth();
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            return (
+              <div className="h-56 relative">
+                {/* Grid lines */}
+                <div className="absolute inset-0 ml-12 flex flex-col justify-between pointer-events-none">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <div key={i} className="border-t border-dashed border-gray-100 w-full"></div>
+                  ))}
+                </div>
+
+                {/* Y-axis labels */}
+                <div className="absolute left-0 top-0 bottom-6 flex flex-col justify-between text-xs text-gray-400 w-10">
+                  {yAxisValues.map((val, i) => (
+                    <span key={i}>{formatAxisValue(val)}</span>
+                  ))}
+                </div>
+
+                {/* Chart content */}
+                <div className="ml-12 h-[calc(100%-24px)] flex items-end gap-2 pb-0">
+                  {chartData.map((item, i) => {
+                    const barHeight = maxRevenue > 0 ? (item.revenue / maxRevenue) * 100 : 0;
+                    const isHighlighted = chartPeriod === 'monthly' && item.label === monthNames[currentMonth];
+
+                    return (
+                      <div key={i} className="flex-1 flex flex-col items-center h-full justify-end group">
+                        <div className="relative w-full flex justify-center h-full items-end">
+                          {/* Tooltip on hover */}
+                          <div className="absolute -top-16 left-1/2 -translate-x-1/2 bg-[#0d0c22] text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap z-10 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg pointer-events-none">
+                            <p className="font-medium">{item.label}</p>
+                            <p className="text-gray-300">{formatCurrency(item.revenue)}</p>
+                            <p className="text-gray-400">{item.deals} deals</p>
+                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-[#0d0c22]"></div>
+                          </div>
+                          <div
+                            className={cn(
+                              'w-full max-w-[32px] rounded-lg transition-all duration-300 cursor-pointer',
+                              isHighlighted
+                                ? 'bg-gradient-to-t from-violet-600 to-purple-500 shadow-lg shadow-violet-200'
+                                : item.revenue > 0
+                                  ? 'bg-gradient-to-t from-violet-300 to-violet-200 group-hover:from-violet-500 group-hover:to-violet-400'
+                                  : 'bg-gray-100'
+                            )}
+                            style={{ height: `${Math.max(barHeight, item.revenue > 0 ? 5 : 2)}%`, minHeight: '4px' }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* X-axis labels */}
+                <div className="ml-12 flex gap-2 text-xs text-gray-400 pt-3">
+                  {chartData.map((item, i) => {
+                    const isHighlighted = chartPeriod === 'monthly' && item.label === monthNames[currentMonth];
+                    return (
+                      <span key={i} className={cn(
+                        "flex-1 text-center font-medium",
+                        isHighlighted && "text-violet-600"
+                      )}>{item.label}</span>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })()}
         </div>
 
         {/* Customers Active Section */}

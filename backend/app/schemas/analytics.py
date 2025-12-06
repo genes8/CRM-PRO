@@ -25,6 +25,25 @@ class RecentActivity(BaseModel):
     timestamp: str
 
 
+class MonthlyRevenue(BaseModel):
+    month: int
+    year: int
+    revenue: float
+    deals_count: int
+
+
+class WeeklyRevenue(BaseModel):
+    week_start: str
+    revenue: float
+    deals_count: int
+
+
+class YearlyRevenue(BaseModel):
+    year: int
+    revenue: float
+    deals_count: int
+
+
 class AnalyticsResponse(BaseModel):
     total_contacts: int
     total_deals: int
@@ -37,3 +56,6 @@ class AnalyticsResponse(BaseModel):
     tasks_completed_this_week: int
     deals_closed_this_month: int
     recent_activities: List[RecentActivity]
+    monthly_revenue: List[MonthlyRevenue]
+    weekly_revenue: List[WeeklyRevenue]
+    yearly_revenue: List[YearlyRevenue]

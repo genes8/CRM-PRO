@@ -26,7 +26,7 @@ export default function AppLayout() {
       <Sidebar />
       <Header />
       <main className="ml-60 pt-14 min-h-screen">
-        <div className="p-6">
+        <div className="p-4">
           <Outlet />
         </div>
       </main>

@@ -16,7 +16,7 @@ import { formatCurrency, formatDate, getStageColor, cn } from '~/lib/utils';
 import type { Deal, DealCreate, DealStage, Contact } from '~/lib/types';
 
 export function meta() {
-  return [{ title: "Deals | Commodo" }];
+  return [{ title: "Deals | CRM Pro" }];
 }
 
 const stageOptions = [
@@ -215,7 +215,6 @@ export default function Deals() {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
-          <h3 className="text-base font-semibold text-[#0d0c22]">Deals</h3>
           <div className="flex bg-gray-100 rounded-lg p-1">
             <button
               onClick={() => setViewMode('pipeline')}

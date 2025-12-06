@@ -25,7 +25,7 @@ export function Sidebar() {
         <div className="w-7 h-7 bg-[#0d0c22] rounded-md flex items-center justify-center">
           <div className="w-3.5 h-3.5 border-2 border-white rounded-sm" />
         </div>
-        <span className="text-lg font-semibold text-[#0d0c22] tracking-tight">Commodo</span>
+        <span className="text-lg font-semibold text-[#0d0c22] tracking-tight">CRM Pro</span>
       </div>
 
       {/* Search */}

@@ -5,7 +5,7 @@ import { Button } from '~/components/ui';
 
 export function meta() {
   return [
-    { title: "Commodo - Professional Dashboard Solution" },
+    { title: "CRM Pro - Professional Dashboard Solution" },
     { name: "description", content: "Manage your business with our professional dashboard solution." },
   ];
 }
@@ -34,7 +34,7 @@ export default function Home() {
             <div className="w-8 h-8 bg-[#0d0c22] rounded-lg flex items-center justify-center">
               <div className="w-4 h-4 border-2 border-white rounded-sm" />
             </div>
-            <span className="text-xl font-semibold text-[#0d0c22]">Commodo</span>
+            <span className="text-xl font-semibold text-[#0d0c22]">CRM Pro</span>
           </div>
           <a href="/api/auth/google/login">
             <Button>
@@ -116,7 +116,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-gray-100 py-8 px-6">
         <div className="max-w-7xl mx-auto text-center text-sm text-gray-500">
-          © 2024 Commodo. All rights reserved.
+          © 2024 CRM Pro. All rights reserved.
         </div>
       </footer>
     </div>

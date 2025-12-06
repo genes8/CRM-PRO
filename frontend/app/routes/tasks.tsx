@@ -14,11 +14,11 @@ import {
 } from 'lucide-react';
 import { Card, Button, Input, Select, Badge, Modal, EmptyState } from '~/components/ui';
 import { tasksApi, contactsApi } from '~/lib/api';
-import { formatDate, getPriorityColor, getTaskStatusColor, cn } from '~/lib/utils';
+import { formatDate, getPriorityColor, cn } from '~/lib/utils';
 import type { Task, TaskCreate, TaskType, TaskPriority, TaskStatus, Contact } from '~/lib/types';
 
 export function meta() {
-  return [{ title: "Tasks | Commodo" }];
+  return [{ title: "Tasks | CRM Pro" }];
 }
 
 const statusOptions = [
@@ -195,11 +195,19 @@ export default function Tasks() {
   const completedTasks = tasks.filter(t => t.is_completed);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header with filters */}
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-base font-semibold text-[#0d0c22]">Tasks</h3>
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-gray-700">
+            Pending <span className="text-gray-400">({pendingTasks.length})</span>
+          </span>
+          <span className="text-gray-300">|</span>
+          <span className="text-sm text-gray-500">
+            Completed <span className="text-gray-400">({completedTasks.length})</span>
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
@@ -207,21 +215,31 @@ export default function Tasks() {
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300 w-48"
+              className="pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300 w-44"
             />
           </div>
-          <Select
-            options={statusOptions}
+          <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-32"
-          />
-          <Select
-            options={priorityOptions}
+            className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300 bg-white text-gray-600"
+          >
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
-            className="w-32"
-          />
+            className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300 bg-white text-gray-600"
+          >
+            <option value="">All Priority</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+          </select>
           <Button size="sm" onClick={() => openModal()}>
             <Plus className="h-4 w-4" />
             Add
@@ -245,49 +263,45 @@ export default function Tasks() {
           />
         </Card>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* Pending Tasks */}
           {pendingTasks.length > 0 && (
-            <div>
-              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">
-                Pending ({pendingTasks.length})
-              </h2>
-              <div className="space-y-2">
-                {pendingTasks.map((task) => {
-                  const TypeIcon = getTypeIcon(task.task_type);
-                  const overdue = isOverdue(task.due_date);
-                  return (
-                    <Card key={task.id} padding="none" className="hover:shadow-md transition-shadow">
-                      <div className="p-4 flex items-start gap-4">
-                        <button
-                          onClick={() => handleToggleComplete(task)}
-                          className={cn(
-                            'mt-0.5 h-5 w-5 rounded border-2 flex items-center justify-center transition-colors',
-                            task.is_completed
-                              ? 'bg-green-500 border-green-500 text-white'
-                              : 'border-slate-300 hover:border-blue-500'
-                          )}
-                        >
-                          {task.is_completed && <Check className="h-3 w-3" />}
-                        </button>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-4">
-                            <div>
-                              <h3 className={cn(
-                                'font-medium',
-                                task.is_completed ? 'text-slate-400 line-through' : 'text-slate-900'
-                              )}>
-                                {task.title}
-                              </h3>
-                              {task.description && (
-                                <p className="text-sm text-slate-500 mt-0.5 line-clamp-1">
-                                  {task.description}
-                                </p>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2 flex-shrink-0">
-                              <Badge className={getPriorityColor(task.priority)}>
-                                {task.priority}
+            <div className="space-y-2">
+              {pendingTasks.map((task) => {
+                const TypeIcon = getTypeIcon(task.task_type);
+                const overdue = isOverdue(task.due_date);
+                return (
+                  <Card key={task.id} padding="none" className="hover:shadow-md transition-shadow">
+                    <div className="p-4 flex items-start gap-4">
+                      <button
+                        onClick={() => handleToggleComplete(task)}
+                        className={cn(
+                          'mt-0.5 h-5 w-5 rounded border-2 flex items-center justify-center transition-colors',
+                          task.is_completed
+                            ? 'bg-green-500 border-green-500 text-white'
+                            : 'border-slate-300 hover:border-blue-500'
+                        )}
+                      >
+                        {task.is_completed && <Check className="h-3 w-3" />}
+                      </button>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <h3 className={cn(
+                              'font-medium',
+                              task.is_completed ? 'text-slate-400 line-through' : 'text-slate-900'
+                            )}>
+                              {task.title}
+                            </h3>
+                            {task.description && (
+                              <p className="text-sm text-slate-500 mt-0.5 line-clamp-1">
+                                {task.description}
+                              </p>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            <Badge className={getPriorityColor(task.priority)}>
+                              {task.priority}
                               </Badge>
                               <button
                                 onClick={() => openModal(task)}
@@ -330,58 +344,53 @@ export default function Tasks() {
                     </Card>
                   );
                 })}
-              </div>
             </div>
           )}
 
           {/* Completed Tasks */}
           {completedTasks.length > 0 && (
-            <div>
-              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">
-                Completed ({completedTasks.length})
-              </h2>
-              <div className="space-y-2">
-                {completedTasks.map((task) => {
-                  const TypeIcon = getTypeIcon(task.task_type);
-                  return (
-                    <Card key={task.id} padding="none" className="opacity-60 hover:opacity-100 transition-opacity">
-                      <div className="p-4 flex items-start gap-4">
-                        <button
-                          onClick={() => handleToggleComplete(task)}
-                          className="mt-0.5 h-5 w-5 rounded border-2 bg-green-500 border-green-500 text-white flex items-center justify-center"
-                        >
-                          <Check className="h-3 w-3" />
-                        </button>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-4">
-                            <h3 className="font-medium text-slate-400 line-through">
-                              {task.title}
-                            </h3>
-                            <button
-                              onClick={() => handleDelete(task.id)}
-                              className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
-                          <div className="flex items-center gap-4 mt-2 text-xs text-slate-400">
+            <div className="space-y-2 pt-4 border-t border-gray-100">
+              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Completed</p>
+              {completedTasks.map((task) => {
+                const TypeIcon = getTypeIcon(task.task_type);
+                return (
+                  <Card key={task.id} padding="none" className="opacity-60 hover:opacity-100 transition-opacity">
+                    <div className="p-4 flex items-start gap-4">
+                      <button
+                        onClick={() => handleToggleComplete(task)}
+                        className="mt-0.5 h-5 w-5 rounded border-2 bg-green-500 border-green-500 text-white flex items-center justify-center"
+                      >
+                        <Check className="h-3 w-3" />
+                      </button>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-4">
+                          <h3 className="font-medium text-slate-400 line-through">
+                            {task.title}
+                          </h3>
+                          <button
+                            onClick={() => handleDelete(task.id)}
+                            className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                        <div className="flex items-center gap-4 mt-2 text-xs text-slate-400">
+                          <span className="flex items-center gap-1">
+                            <TypeIcon className="h-3.5 w-3.5" />
+                            {task.task_type.replace('_', ' ')}
+                          </span>
+                          {task.completed_at && (
                             <span className="flex items-center gap-1">
-                              <TypeIcon className="h-3.5 w-3.5" />
-                              {task.task_type.replace('_', ' ')}
+                              <Clock className="h-3.5 w-3.5" />
+                              Completed {formatDate(task.completed_at)}
                             </span>
-                            {task.completed_at && (
-                              <span className="flex items-center gap-1">
-                                <Clock className="h-3.5 w-3.5" />
-                                Completed {formatDate(task.completed_at)}
-                              </span>
-                            )}
-                          </div>
+                          )}
                         </div>
                       </div>
-                    </Card>
-                  );
-                })}
-              </div>
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
           )}
         </div>

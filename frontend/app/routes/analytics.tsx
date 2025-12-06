@@ -29,7 +29,7 @@ import { formatCurrency, cn } from '~/lib/utils';
 import type { Analytics } from '~/lib/types';
 
 export function meta() {
-  return [{ title: "Analytics | Commodo" }];
+  return [{ title: "Analytics | CRM Pro" }];
 }
 
 const COLORS = ['#3b82f6', '#8b5cf6', '#f59e0b', '#22c55e', '#ef4444', '#6b7280'];

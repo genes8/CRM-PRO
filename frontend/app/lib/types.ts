@@ -126,6 +126,25 @@ export interface RecentActivity {
   timestamp: string;
 }
 
+export interface MonthlyRevenue {
+  month: number;
+  year: number;
+  revenue: number;
+  deals_count: number;
+}
+
+export interface WeeklyRevenue {
+  week_start: string;
+  revenue: number;
+  deals_count: number;
+}
+
+export interface YearlyRevenue {
+  year: number;
+  revenue: number;
+  deals_count: number;
+}
+
 export interface Analytics {
   total_contacts: number;
   total_deals: number;
@@ -138,6 +157,9 @@ export interface Analytics {
   tasks_completed_this_week: number;
   deals_closed_this_month: number;
   recent_activities: RecentActivity[];
+  monthly_revenue: MonthlyRevenue[];
+  weekly_revenue: WeeklyRevenue[];
+  yearly_revenue: YearlyRevenue[];
 }
 
 export interface AuthCheck {
